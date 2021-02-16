@@ -1,18 +1,15 @@
 import socket
+from CreateTables import CreateTables
 from requests import Requests
 import os.path
 from os import path
 import sqlite3
 import time
 
-if path.isfile('server.db'):
-    os.remove("server.db")
-    print ("File exist")
-else:
-    print ("File not exist")
-    time.sleep(1)
-    # CreateTables()
-
+file_path='server.db'
+if os.stat(file_path).st_size == 0:
+    print("file empty server.db")
+    CreateTables()
 
 HOST = ''
 with open('port.info') as port_reader:
@@ -30,9 +27,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         while True:
             data = conn.recv(1024)
             text = data.decode("utf-8")
-            pld = {'name':"hhhh",'pKey':"mypkey"}
-            r = Requests(123,2,'100',2,pld)
-            r.reqAction()
+            pld = {'name':"momy",'pKey':"15151515"}
+            r = Requests('no',2,'100',2,pld)
+            cid = r.reqAction()
+            print("the cid from main ",cid)
+            r2 = Requests(cid[0],2,'101',2,pld)
+            r2.reqAction()
             print("Enter message ")
             reply = input()
             replydata = bytearray(reply, "utf-8")
