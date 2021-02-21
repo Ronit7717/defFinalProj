@@ -27,14 +27,16 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         while True:
             data = conn.recv(1024)
             text = data.decode("utf-8")
-            pld = {'name':"momy",'pKey':"15151515"}
-            r = Requests('no',2,'100',2,pld)
-            cid = r.reqAction()
-            print("the cid from main ",cid)
-            r2 = Requests(cid[0],2,'101',2,pld)
-            r2.reqAction()
-            print("Enter message ")
-            reply = input()
+            #the next line is trial...
+            reqNumber = str(text)
+            pld = {'name':"rrr",'pKey':"1234567890"}
+            r = Requests('no',2,str(reqNumber),2,pld)
+            reaction = r.reqAction()
+            # print("Enter message ")
+            if reaction:
+                reply = reaction[0]
+            else:
+                reply = 'no reply'
             replydata = bytearray(reply, "utf-8")
             newdata = bytearray(1024)
             for i in range(min(len(replydata), len(newdata))):

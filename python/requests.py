@@ -18,7 +18,10 @@ class Requests:
     def reqAction(self):
         print("in reqAction")
         u = Users(self.clientId)
+        print(self.code)
+        print(self.code.strip()=='100')
         if self.code == '100':
+            print('the code is 100')
             newUser = u.createUser(self.payload['name'],self.payload['pKey'])
             if newUser!='the user is already exist':
                 print('the new user is' ,self.payload['name'],self.payload['pKey'],newUser[0] )
