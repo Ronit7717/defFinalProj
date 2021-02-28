@@ -4,6 +4,8 @@ import sqlite3
 import random
 import time
 import uuid 
+from datetime import datetime
+
 
 class Users:
     conn = sqlite3.connect('server.db') 
@@ -15,13 +17,14 @@ class Users:
         pass
 
     def createUser(self,n,pKey):
+        now = datetime.now()
         isUserExist = self.c.execute("SELECT * FROM clients WHERE UNAME=?", (n,))
         print(isUserExist)
         res=isUserExist.fetchall()
         if len(res)==0:
             id = uuid.uuid4()
             try:
-                self.c.execute('''INSERT INTO clients (ID, UNAME, publicKey) values (?,?,?)''',(str(id),n,pKey,))  
+                self.c.execute('''INSERT INTO clients (ID, UNAME, publicKey,LastSeen) values (?,?,?)''',(str(id),n,pKey,str(now)))  
                 self.conn.commit()
                 time.sleep(3)
                 return id,1000
@@ -58,7 +61,6 @@ class Users:
                 return publicKey
         except Exception:
             print(Exception)
-
 
 
 

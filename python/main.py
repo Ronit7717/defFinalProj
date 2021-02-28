@@ -27,11 +27,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         while True:
             data = conn.recv(1024)
             text = data.decode("utf-8")
+            reqBody = {'Client id':'123456789','Version':2, 'Code':'100','Payload Size':2,'payload':{'Name':'ronit in ascii','Public Key':'121212121'}}
             #the next line is trial...
-            reqNumber = str(text)
-            pld = {'name':"rrr",'pKey':"1234567890"}
-            r = Requests('no',2,str(reqNumber),2,pld)
-            reaction = r.reqAction()
+            # pld = {'name':"rrr",'pKey':"1234567890"}
+            # r = Requests('no',2,'101',2,pld)
+            reaction = 'a'
             # print("Enter message ")
             if reaction:
                 reply = reaction[0]

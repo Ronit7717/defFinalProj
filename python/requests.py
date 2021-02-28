@@ -1,14 +1,18 @@
 from users import Users
+import sqlite3
+
 class Requests:
 
 #     def __init__(self, req):
 #         self.req = req
-    def __init__(self, cid, vrsn,code,payloadSize,payload):
-        self.clientId = cid
-        self.version = vrsn
-        self.code = code
-        self.pSize = payloadSize
-        self.payload = payload
+    def __init__(self, req):
+        self.clientId = req['Client id']
+        self.version = req['Version']
+        self.code = req['Code']
+        self.pSize = req['Payload Size']
+        if self.pSize>0:
+            self.payload = req['payload']
+
 
 
 
@@ -20,11 +24,11 @@ class Requests:
         u = Users(self.clientId)
         print(self.code)
         print(self.code.strip()=='100')
-        if self.code == '100':
+        if self.code == '100' and self.pSize==2:
             print('the code is 100')
             newUser = u.createUser(self.payload['name'],self.payload['pKey'])
             if newUser!='the user is already exist':
-                print('the new user is' ,self.payload['name'],self.payload['pKey'],newUser[0] )
+                print('the new user is' ,self.payload['name'],self.payload['pKey'],newUser[1] )
             return newUser
         
         elif self.code == '101':

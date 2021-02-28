@@ -41,7 +41,13 @@ void printMenu()
 
 Request *createRequest(char req[1024])
 {
+
     Payload2 *p = new Payload2("yehudit", 999);
+    struct Header head;
+    head.cid = 111;
+    head.version = 2;
+    head.code = 100;
+    head.pSize = 2;
     int clientId = 111;
     int version = 222;
     int code = 0;
@@ -79,13 +85,14 @@ int main(int argc, char *argv[])
         }
         printMenu();
         std::vector<Request *> stocks_;
-        Request *re = new Request();
+        Request *re = new Request(100);
         stocks_.push_back(re);
 
         boost::asio::io_context io_context;
         tcp::socket s(io_context);
         tcp::resolver resolver(io_context);
         boost::asio::connect(s, resolver.resolve(argv[1], argv[2]));
+        s.send(boost::asio::buffer(&stocks_, sizeof(stocks_)));
 
         for (;;)
         {
