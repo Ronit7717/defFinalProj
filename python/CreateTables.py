@@ -10,16 +10,16 @@ def CreateTables():
     conn.text_factory = bytes
     c = conn.cursor()
     c.execute("""
-    CREATE TABLE clients(ID BIT(128) NOT NULL PRIMARY KEY, UNAME BIT(256) NOT NULL,
-    publicKey BIT(256), LastSeen DATETIME DEFAULT (datetime('now','localtime')));
+    CREATE TABLE clients(ID VARCHAR(16) NOT NULL PRIMARY KEY, UNAME VARCHAR(255) NOT NULL,
+    publicKey VARCHAR(128), LastSeen VARCHAR(16));
     """) 
     x=c.execute('SELECT * FROM clients')
     for row in x:
         print(row)
     c.execute("""
-    CREATE TABLE messages(ID BIT(32) NOT NULL PRIMARY KEY,
-    ToClient BIT(128), FromClient BIT(128),
-    Type BIT(8), Content BLOB);
+    CREATE TABLE messages(ID VARCHAR(32) NOT NULL PRIMARY KEY,
+    ToClient VARCHAR(16), FromClient VARCHAR(16),
+    Type VARCHAR(1), Content BLOB);
     """) 
     conn.commit()
     conn.close()
