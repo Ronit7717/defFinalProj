@@ -1,24 +1,25 @@
-
+#include "RegisterPayload.cpp"
 #include <iostream>
 
 using namespace std;
 class LittleReq
 {
 private:
-    char name[16];
+    char clientId[16];
     char version;
     char code;
     int payloadSize;
+    // Payload payload;
 public:
   
 
  LittleReq(){
       
     }
-    void setName(char name[16]){
+    void setClientId(char clientId[16]){
         for (int i = 0; i < 16; i++)
         {
-             this->name[i] = name[i];
+             this->clientId[i] = clientId[i];
         }
     
     }
@@ -33,6 +34,10 @@ public:
      void setPayloadSize(int payloadSize){
         this->payloadSize = payloadSize;    
     }
+
+    // void setPayload(Payload payload){
+    //     this->payload = payload;    
+    // }
     
     
     ~LittleReq();
