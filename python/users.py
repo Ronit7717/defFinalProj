@@ -1,10 +1,11 @@
-import pyodbc
+
 import os
 import sqlite3
 import random
 import time
 import uuid 
 from datetime import datetime
+from messages import Message
 
 
 class Users:
@@ -13,8 +14,6 @@ class Users:
     def __init__(self,cid):
         self.cid=cid
 
-    def getUser(self):
-        pass
 
     def createUser(self,n,pKey):
         now = datetime.now()
@@ -27,40 +26,67 @@ class Users:
                 self.c.execute('''INSERT INTO clients (ID, UNAME, publicKey,LastSeen) values (?,?,?)''',(str(id),n,pKey,str(now)))  
                 self.conn.commit()
                 time.sleep(3)
-                return id,1000
+                return (1000,id)
             except Exception:
-                return 'create user FAILED reason '+str(Exception)
+                return (9000,'create user FAILED reason '+str(Exception))
                 
         else:
-            return "the user is already exist"
+            return (9000,"100 req - the user is already exist")
 
         
 
     def getUsersList(self):
+        if self.cid == None:
+            return (9000,'no client id')
         print("in getUsersList")
         allUsersList=[]
         allUsers = self.c.execute('''SELECT ID,UNAME FROM clients''')
         print("our cid ",self.cid)
         for user in allUsers:
-            print(user[0])
             if user[0]!=self.cid:
                 allUsersList.append(user)
-        return allUsersList
+        return (1001,allUsersList)
 
     def getPublicKey(self, cid):
         try:
             publicKeyValue = self.c.execute('''SELECT publicKey FROM clients WHERE ID=?''',(cid,))
             res = publicKeyValue.fetchall()
-            if len(res)==0:
-                print("sorry, there is no user with this id")
-                return
-            elif len(res)>1:
-                raise "ERROR. there is more than one user with this id"
+            if len(res)!=1:
+                return (9000,"ERROR getting the user by client id")
             else:
                 publicKey = [val for val in publicKeyValue]
-                return publicKey
+                return (1002,publicKey, cid)
         except Exception:
             print(Exception)
+            return (9000)
+
+    def sendMessage(self, cid, messageType, contentSize, content):
+        try:
+            type = int(messageType)
+        except Exception:
+            return(9000,'wrong type of message')
+    
+        m = Message()
+        if messageType == 1:
+            res = m.getSimetricKey(cid)
+        
+        elif messageType == 2:
+            res = m.sendSymetricKey(cid)
+
+        elif messageType == 3:
+            res = m.sendMessage(cid)
+
+        else:
+            return (9000, 'message has wrong type')
+
+        return (1003,res)
+
+    def getMessages(self):
+        pass
+            
+
+
+    
 
 
 

@@ -6,12 +6,13 @@ class Requests:
 #     def __init__(self, req):
 #         self.req = req
     def __init__(self, req):
-        self.clientId = req['Client id']
-        self.version = req['Version']
-        self.code = req['Code']
-        self.pSize = req['Payload Size']
+        self.clientId = req[0]
+        # in case of req 100 no cid nedded
+        self.version = req[1]
+        self.code = req[2]
+        self.pSize = req[3]
         if self.pSize>0:
-            self.payload = req['payload']
+            self.payload = req[4]
 
 
 
@@ -24,29 +25,37 @@ class Requests:
         u = Users(self.clientId)
         print(self.code)
         print(self.code.strip()=='100')
-        if self.code == '100' and self.pSize==2:
+        if self.code == 100 :
             print('the code is 100')
             newUser = u.createUser(self.payload['name'],self.payload['pKey'])
-            if newUser!='the user is already exist':
+            if newUser[0]!=9000:
                 print('the new user is' ,self.payload['name'],self.payload['pKey'],newUser[1] )
-            return newUser
+                return newUser
         
-        elif self.code == '101':
-            print(u.cid)
-            print("in get all users")
-            listOfUsers = u.getUsersList()
-            if(listOfUsers=="no users are exist"):
-                return
-            for user in listOfUsers:
-                print("in list:",user)
+        elif self.code == 101:
+            if self.pSize == 0:
+                print("request - get all users")
+                listOfUsers = u.getUsersList()
+                if(listOfUsers[1]=="no users are exist"):
+                    return
+                for user in listOfUsers:
+                    print("in list:",user)
+            else:
+                return (9000, 'content should be 0')
                 
-        elif self.code == '102':
-            u.getPublicKey(self.clientId)
+        elif self.code == 102:
+            print('request - get public key')
+            publicKey = u.getPublicKey(self.payload['cid'])
+            #buildReturnObject()
+            return publicKey
 
-        elif self.code=='103':
-            pass
 
-        elif self.code=='104':
+        elif self.code==103:
+            print('req - send message')
+            sendMessage = u.sendMessage(self.payload['cid'],self.payload['messageType'],self.payload['contentSize'],self.payload['content'])
+            return sendMessage
+
+        elif self.code==104:
             pass
 
 
@@ -55,6 +64,11 @@ class Requests:
             
 
         # other codes should give exist uName for every request
+
+    def buildReturnObject(self,obj):
+        pass
+        # build the object to return to the client maybe use struct.pack
+        #answer header: version, code, payload size, payload
 
 
 

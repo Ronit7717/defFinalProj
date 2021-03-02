@@ -5,6 +5,8 @@ import os.path
 from os import path
 import sqlite3
 import time
+import json
+import struct
 
 file_path='server.db'
 if os.stat(file_path).st_size == 0:
@@ -25,8 +27,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     with conn:
         print('Connected by', addr)
         while True:
-            data = conn.recv(1024)
-            text = data.decode("utf-8")
+            data = struct.unpack('16sbbi',bytes(conn.recv(struct.calcsize('16sbbi'))))
+            req = Requests(data)
+            data2 = conn.recv(1024)
+            text = data2.decode("utf-8")
             reqBody = {'Client id':'123456789','Version':2, 'Code':'100','Payload Size':2,'payload':{'Name':'ronit in ascii','Public Key':'121212121'}}
             #the next line is trial...
             # pld = {'name':"rrr",'pKey':"1234567890"}
