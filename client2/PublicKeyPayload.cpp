@@ -1,20 +1,31 @@
-#include "RegisterPayload.h"
 
+#include <iostream>
 
-
-class RegisterPayload : public Payload{
+using namespace std;
+class PublicKeyPayload
 {
 private:
-    /* data */
+    char clientId[16];
 public:
-    RegisterPayload(/* args */){
+    PublicKeyPayload(){
+      
         
     }
-    RegisterPayload(string name, string description){
 
+
+
+    void setClientId(char clientId[16]){
+        for (int i = 0; i < 16; i++)
+        {
+            this->clientId[i] = clientId[i];
+        }
+        
     }
+        
+    
 
-    ~RegisterPayload();
+    
+    ~PublicKeyPayload();
 };
 
 
