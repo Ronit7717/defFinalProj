@@ -1,11 +1,14 @@
 #include <cstdlib>
-#include <cstring>
+#include <string>
 #include <iostream>
-#include "Request.cpp"
+// #include "RegisterPayload.cpp"
+// #include "PublicKeyPayload.cpp"
+// #include "Request.cpp"
 #include "LittleReq.cpp"
 #include <winsock2.h>
 #include "boost/asio.hpp"
 using  boost::asio::ip::tcp;
+using namespace std;
 void clear(char message[], int length){
     for (int i = 0; i< length; i++)
         message[i] = '\0';
@@ -29,26 +32,75 @@ std ::array<uint8_t, sizeof(LittleReq)> createRequest(char req[1024]){
 
     std ::array<uint8_t, sizeof(LittleReq) > buffer;
     auto* header = reinterpret_cast<LittleReq*>(buffer.data());  
- char a[16] = "y6a4567fghjcvbn";
-            header->setName(a);
-            header->setVersion(2);
+    char a[16] = "y6a4567fghjcvbn";
+    header->setClientId(a);
+    header->setVersion(2);
+    // Payload *p;
+
+
     switch((int)req[0]-'0') {
     case 1:
-     std::cout << "user is asking to register";
-
-
-           
-            header->setCode(100);
-            header->setPayloadSize(1600);
-
+    {
+     std::cout << "user is asking to register";           
+        header->setCode(100);
+        char name[255] = "64f3f63985f04beb81a0e43321880182\0";
+        string publicKey = "user";
+        RegisterPayload *p = new RegisterPayload(name, publicKey);
+        header->setPayloadSize(sizeof(*p));
+        // s.send(boost::asio::buffer(buffer));
+//     std ::array<uint8_t, sizeof(RegisterPayload) > buffer2;
+//     auto* header2 = reinterpret_cast<RegisterPayload*>(buffer2.data());
+// header2->setName(name);
+// header2->setPublicKey(publicKey);
+        // s.send(boost::asio::buffer(buffer2));
 
         break;
+    }
+        
     case 2:
-      std::cout << "user is asking for users list";
+    {
+        header->setCode(101);
+        header->setPayloadSize(1600);
+    
         break;
+}
+    case 3:
+    {
+        header->setCode(102);
+        header->setPayloadSize(1600);
+        break;
+}
 
-        // code block
-       
+    case 4:
+     {
+        header->setCode(104);
+        header->setPayloadSize(1600);
+        break;
+}
+    case 5:
+     {
+         header->setCode(103);
+        header->setPayloadSize(1600);
+        break;
+}
+    case 51:
+     {
+        header->setCode(100);
+        header->setPayloadSize(1600);
+        break;
+}
+    case 52:
+     {
+        header->setCode(100);
+        header->setPayloadSize(1600);
+        break;
+}
+    case 0:
+     {
+        header->setCode(100);
+        header->setPayloadSize(1600);
+        break;
+}
     };
 
     return buffer;
@@ -56,7 +108,9 @@ std ::array<uint8_t, sizeof(LittleReq)> createRequest(char req[1024]){
 
 int main(int argc, char* argv[])
 {
-
+        char name[255] = "64f3f63985f04beb81a0e43321880182\0";
+        string publicKey = "user";
+        RegisterPayload *p = new RegisterPayload(name, publicKey);
     const int max_length = 1024;
     try
     {
@@ -77,16 +131,21 @@ int main(int argc, char* argv[])
             clear(request, max_length);
             std::cin.getline(request, max_length);
             std ::array<uint8_t, sizeof(LittleReq) > rrr =  createRequest(request);
-
+            
            
       
 
-         
+        char name[255] = "64f3f63985f04beb81a0e43321880182\0";
+        char publicKey[32] = "user";
 
-         
+            std ::array<uint8_t, sizeof(RegisterPayload) > buffer2;
+            auto* header2 = reinterpret_cast<RegisterPayload*>(buffer2.data());
+            header2->setName(name);
+            header2->setPublicKey(publicKey);
+            
 
             s.send(boost::asio::buffer(rrr));
-            
+            s.send(boost::asio::buffer(buffer2));
             
             
             char reply[max_length];

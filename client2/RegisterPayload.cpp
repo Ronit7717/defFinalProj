@@ -1,25 +1,38 @@
-#include "Payload.cpp"
+#include "Payload.h"
 
 #include <iostream>
 
 using namespace std;
-class RegisterPayload: public Payload
+class RegisterPayload
 {
 private:
-    string name[8];
-    string publicKey;
+    char name[255];
+    char publicKey[32];
 public:
-    RegisterPayload(string name[8], string publicKey){
+    RegisterPayload(char name[255], string publicKey){
         for (int i = 0; i < 8; i++)
         {
             this->name[i] = name[i];
         }
         
-        this->publicKey = publicKey;
     }
 
- RegisterPayload(string name[8]){
+    RegisterPayload(){
       
+    }
+
+    void setName(char name[255]){
+        for (int i = 0; i < 255; i++)
+        {
+            this->name[i] = name[i];
+        }
+        
+    }
+    void setPublicKey(char publicKey[32]){
+            for (int i = 0; i < 32; i++)
+        {
+            this->publicKey[i] = publicKey[i];
+        }        
     }
 
     
