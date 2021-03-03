@@ -55,10 +55,10 @@ class Users:
                 return (9000,"ERROR getting the user by client id")
             else:
                 publicKey = [val for val in publicKeyValue]
-                return (1002,publicKey, cid)
+                return (1002,publicKey[0], cid)
         except Exception:
             print(Exception)
-            return (9000)
+            return (9000,"could not ask for user's public key")
 
     def sendMessage(self, cid, messageType, contentSize, content):
         try:

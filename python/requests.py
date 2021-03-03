@@ -5,14 +5,13 @@ class Requests:
 
 #     def __init__(self, req):
 #         self.req = req
-    def __init__(self, req):
+    def __init__(self, req,payload):
         self.clientId = req[0]
         # in case of req 100 no cid nedded
         self.version = req[1]
         self.code = req[2]
         self.pSize = req[3]
-        if self.pSize>0:
-            self.payload = req[4]
+        self.payload=payload
 
 
 
@@ -27,25 +26,25 @@ class Requests:
         print(self.code.strip()=='100')
         if self.code == 100 :
             print('the code is 100')
-            newUser = u.createUser(self.payload['name'],self.payload['pKey'])
+            name=self.payload[0].rstrip().decode("utf-8")
+            pKey=self.payload[1].rstrip().decode("utf-8")
+            newUser = u.createUser(name,pKey)
             if newUser[0]!=9000:
-                print('the new user is' ,self.payload['name'],self.payload['pKey'],newUser[1] )
+                print('the new user is',name,pKey,newUser[1] )
                 return newUser
         
         elif self.code == 101:
             if self.pSize == 0:
                 print("request - get all users")
                 listOfUsers = u.getUsersList()
-                if(listOfUsers[1]=="no users are exist"):
-                    return
-                for user in listOfUsers:
-                    print("in list:",user)
+                return listOfUsers
             else:
-                return (9000, 'content should be 0')
+                return (9000, 'psize should be 0')
                 
         elif self.code == 102:
             print('request - get public key')
-            publicKey = u.getPublicKey(self.payload['cid'])
+            cid=self.payload[0].rstrip().decode("utf-8")
+            publicKey = u.getPublicKey(cid)
             #buildReturnObject()
             return publicKey
 
