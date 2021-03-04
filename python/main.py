@@ -29,7 +29,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         while True:
             data = struct.unpack('16sbbi',bytes(conn.recv(struct.calcsize('16sbbi'))))
             payload=''
-            if data[2]==100:
+            message_type=data[2]
+            if message_type==100:
                 payload=struct.unpack('255s32s', bytes(conn.recv(struct.calcsize('255s32s')))) 
             elif(message_type == 101):
                 print("message is 101. No payload is needed")
@@ -39,6 +40,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
 
             req = Requests(data,payload)
+            r=req.reqAction()
+            print('the r ',r)
             data2 = conn.recv(1024)
             text = data2.decode("utf-8")
             reqBody = {'Client id':'123456789','Version':2, 'Code':'100','Payload Size':2,'payload':{'Name':'ronit in ascii','Public Key':'121212121'}}

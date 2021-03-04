@@ -22,18 +22,18 @@ class Requests:
     def reqAction(self):
         print("in reqAction")
         u = Users(self.clientId)
-        print(self.code)
-        print(self.code.strip()=='100')
         if self.code == 100 :
             print('the code is 100')
             name=self.payload[0].rstrip().decode("utf-8")
             pKey=self.payload[1].rstrip().decode("utf-8")
+            print(name,pKey)
             newUser = u.createUser(name,pKey)
             if newUser[0]!=9000:
                 print('the new user is',name,pKey,newUser[1] )
-                return newUser
+            return newUser
         
         elif self.code == 101:
+            print(self.pSize)
             if self.pSize == 0:
                 print("request - get all users")
                 listOfUsers = u.getUsersList()
@@ -45,7 +45,7 @@ class Requests:
             print('request - get public key')
             cid=self.payload[0].rstrip().decode("utf-8")
             publicKey = u.getPublicKey(cid)
-            #buildReturnObject()
+            buildReturnObject()
             return publicKey
 
 
@@ -55,7 +55,8 @@ class Requests:
             return sendMessage
 
         elif self.code==104:
-            pass
+            getMessages = u.getMessages()
+            return getMessages
 
 
             

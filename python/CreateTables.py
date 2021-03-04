@@ -17,7 +17,7 @@ def CreateTables():
     for row in x:
         print(row)
     c.execute("""
-    CREATE TABLE messages(ID VARCHAR(32) NOT NULL PRIMARY KEY,
+    CREATE TABLE messages(ID INTEGER NOT NULL PRIMARY KEY,
     ToClient VARCHAR(16), FromClient VARCHAR(16),
     Type VARCHAR(1), Content BLOB);
     """) 

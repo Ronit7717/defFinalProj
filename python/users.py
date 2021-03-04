@@ -21,9 +21,9 @@ class Users:
         print(isUserExist)
         res=isUserExist.fetchall()
         if len(res)==0:
-            id = uuid.uuid4()
+            id = str(uuid.uuid4())
             try:
-                self.c.execute('''INSERT INTO clients (ID, UNAME, publicKey,LastSeen) values (?,?,?)''',(str(id),n,pKey,str(now)))  
+                self.c.execute('''INSERT INTO clients (ID, UNAME, publicKey,LastSeen) values (?,?,?,?)''',(id,n,pKey,str(now)))  
                 self.conn.commit()
                 time.sleep(3)
                 return (1000,id)
@@ -66,7 +66,7 @@ class Users:
         except Exception:
             return(9000,'wrong type of message')
     
-        m = Message()
+        m = Message(self.cid)
         if messageType == 1:
             res = m.getSimetricKey(cid)
         
@@ -82,8 +82,9 @@ class Users:
         return (1003,res)
 
     def getMessages(self):
-        pass
-            
+        m=Message(self.cid)
+        messsgesList = m.getAllMessages()
+        return messsgesList    
 
 
     
