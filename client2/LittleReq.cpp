@@ -1,4 +1,3 @@
-#include "RegisterPayload.cpp"
 #include <iostream>
 
 using namespace std;

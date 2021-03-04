@@ -1,8 +1,8 @@
 #include <cstdlib>
 #include <string>
 #include <iostream>
-// #include "RegisterPayload.cpp"
-// #include "PublicKeyPayload.cpp"
+#include "RegisterPayload.cpp"
+#include "PublicKeyPayload.cpp"
 // #include "Request.cpp"
 #include "LittleReq.cpp"
 #include <winsock2.h>
@@ -106,6 +106,92 @@ std ::array<uint8_t, sizeof(LittleReq)> createRequest(char req[1024]){
     return buffer;
 }    
 
+createGeneralHeader(auto* header){
+    char a[16] = "y6a4567fghjcvbn";
+    header->setClientId(a);
+    header->setVersion(2);
+}
+
+
+std ::array<uint8_t, sizeof(LittleReq) > header1(){
+    std ::array<uint8_t, sizeof(LittleReq) > buffer;
+    auto* header = reinterpret_cast<LittleReq*>(buffer.data());  
+    createGeneralHeader(header);
+    header->setCode(100);
+    header->setPayloadSize(287);
+    return buffer;
+}
+
+std ::array<uint8_t, sizeof(RegisterPayload) >  payload1(){
+    std ::array<uint8_t, sizeof(RegisterPayload) > buffer;
+    auto* header = reinterpret_cast<RegisterPayload*>(buffer.data());
+    char name[255] = "64f3f63985f04beb81a0e43321880182\0";
+    char publicKey[32] = "user";
+    header->setName(name);
+    header->setPublicKey(publicKey);
+    return buffer;
+}
+
+std ::array<uint8_t, sizeof(LittleReq) > header2(){
+    std ::array<uint8_t, sizeof(LittleReq) > buffer;
+    auto* header = reinterpret_cast<LittleReq*>(buffer.data());  
+    createGeneralHeader(header);
+    header->setCode(101);
+    header->setPayloadSize(0);
+    return buffer;
+}
+
+std ::array<uint8_t, sizeof(LittleReq) > header3(){
+    std ::array<uint8_t, sizeof(LittleReq) > buffer;
+    auto* header = reinterpret_cast<LittleReq*>(buffer.data());  
+    createGeneralHeader(header);
+    header->setCode(102);
+    header->setPayloadSize(16);
+    return buffer;
+}
+
+std ::array<uint8_t, sizeof(PublicKeyPayload) >  payload3(){
+    std ::array<uint8_t, sizeof(PublicKeyPayload) > buffer;
+    auto* header = reinterpret_cast<PublicKeyPayload*>(buffer.data());
+    char clientId[16] = "64b81a0e0182\0";
+    header->setClientId(clientId);
+    return buffer;
+}
+
+
+
+std ::array<uint8_t, sizeof(LittleReq) > header4(){
+    std ::array<uint8_t, sizeof(LittleReq) > buffer;
+    auto* header = reinterpret_cast<LittleReq*>(buffer.data());  
+    createGeneralHeader(header);
+    header->setCode(104);
+    header->setPayloadSize(0);
+    return buffer;
+}
+
+
+std ::array<uint8_t, sizeof(LittleReq) > header5(){
+    std ::array<uint8_t, sizeof(LittleReq) > buffer;
+    auto* header = reinterpret_cast<LittleReq*>(buffer.data());  
+    createGeneralHeader(header);
+    header->setCode(103);
+    header->setPayloadSize(0);
+    return buffer;
+}
+
+
+std ::array<uint8_t, sizeof(PublicKeyPayload) >  payload5(){
+    std ::array<uint8_t, sizeof(PublicKeyPayload) > buffer;
+    auto* header = reinterpret_cast<PublicKeyPayload*>(buffer.data());
+    char clientId[16] = "64b81a0e0182\0";
+    header->setClientId(clientId);
+    return buffer;
+}
+
+
+
+
+
 int main(int argc, char* argv[])
 {
         char name[255] = "64f3f63985f04beb81a0e43321880182\0";
@@ -130,22 +216,63 @@ int main(int argc, char* argv[])
             char request[max_length];
             clear(request, max_length);
             std::cin.getline(request, max_length);
-            std ::array<uint8_t, sizeof(LittleReq) > rrr =  createRequest(request);
+            // std ::array<uint8_t, sizeof(LittleReq) > rrr =  createRequest(request);
             
            
-      
+            if((int)request[0]-'0' == 1){
+            std ::array<uint8_t, sizeof(LittleReq) > header = header1();
+            std ::array<uint8_t, sizeof(RegisterPayload) > payload = payload1();
+            // char name[255] = "64f3f63985f04beb81a0e43321880182\0";
+            // char publicKey[32] = "user";
 
-        char name[255] = "64f3f63985f04beb81a0e43321880182\0";
-        char publicKey[32] = "user";
+            // std ::array<uint8_t, sizeof(RegisterPayload) > buffer2;
+            // auto* header2 = reinterpret_cast<RegisterPayload*>(buffer2.data());
+            // header2->setName(name);
+            // header2->setPublicKey(publicKey);
+            s.send(boost::asio::buffer(header));
+            s.send(boost::asio::buffer(payload));
+            std ::array<uint8_t, sizeof(LittleReq) > header1;
+            s.receive(boost::asio::buffer(header1));
+            auto* headerdd = reinterpret_cast<LittleReq*>(header1.data());
 
-            std ::array<uint8_t, sizeof(RegisterPayload) > buffer2;
-            auto* header2 = reinterpret_cast<RegisterPayload*>(buffer2.data());
-            header2->setName(name);
-            header2->setPublicKey(publicKey);
+
+              int a = 9;
+            }
+            else if ((int)request[0]-'0' == 2){
+            std ::array<uint8_t, sizeof(LittleReq) > header = header2();
+              s.send(boost::asio::buffer(header));
+              std ::array<uint8_t, sizeof(LittleReq) > header1;
+              s.receive(boost::asio::buffer(header1));
+              int a = 9;
+              }
+            else if ((int)request[0]-'0' == 3){
+            std ::array<uint8_t, sizeof(LittleReq) > header = header3();
+            std ::array<uint8_t, sizeof(PublicKeyPayload) > payload = payload3();
+              s.send(boost::asio::buffer(header));
+              s.send(boost::asio::buffer(payload));
+               std ::array<uint8_t, sizeof(LittleReq) > header1;
+              s.receive(boost::asio::buffer(header1));
+              int a = 9;
+              }
+
+            else if ((int)request[0]-'0' == 4){
+            std ::array<uint8_t, sizeof(LittleReq) > header = header4();
+              s.send(boost::asio::buffer(header));
+               std ::array<uint8_t, sizeof(LittleReq) > header1;
+              s.receive(boost::asio::buffer(header1));
+              int a = 9;
+              }
             
+            else if ((int)request[0]-'0' == 5){
+            std ::array<uint8_t, sizeof(LittleReq) > header = header5();
+            std ::array<uint8_t, sizeof(PublicKeyPayload) > payload = payload5();
+              s.send(boost::asio::buffer(header));
+              s.send(boost::asio::buffer(payload));
+               std ::array<uint8_t, sizeof(LittleReq) > header1;
+              s.receive(boost::asio::buffer(header1));
+              int a = 9;
+              }
 
-            s.send(boost::asio::buffer(rrr));
-            s.send(boost::asio::buffer(buffer2));
             
             
             char reply[max_length];
