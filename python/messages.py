@@ -12,22 +12,22 @@ class Message:
             sqlList=self.c.execute('''SELECT * FROM messages WHERE ToClient=?''',(self.cid,))
             res=sqlList.fetchall()
             messagesList = [item for item in res]
-            return (1004,messagesList)
+            return (1004,(messagesList,))
         except Exception:
             return (9000,'could not get messages list')
 
     def sendMessage(self,clientId,type,content):
+        if type<1 or type>4:
+            return (9000,'wrong type')
+        if type==1:
+            content='Request for symmetric key'
         try:
             self.c.execute('''INSERT INTO messages (ToClient, FromClient, Type ,Content) values (?,?,?,?)''',(clientId,self.cid,type,content,))
             self.c.commit()
             messageId=self.c.lastrowid
-            return (1003,clientId,messageId)
+            return (1003,(clientId,messageId))
         except Exception:
             return (9000,'the message was not saved')
 
-    def getSimetricKey(self):
-        pass
-
-    def sendSymetricKey(self):
-        pass
+        
 

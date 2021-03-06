@@ -1,17 +1,20 @@
 from users import Users
 import sqlite3
+import sys
+import struct
 
 class Requests:
 
 #     def __init__(self, req):
 #         self.req = req
     def __init__(self, req,payload):
-        self.clientId = req[0]
+        self.clientId = req[0].decode()
+        self.clientId = self.clientId.rstrip('\x00')
         # in case of req 100 no cid nedded
         self.version = req[1]
         self.code = req[2]
         self.pSize = req[3]
-        self.payload=payload
+        self.payload=payload.decode().rstrip('\x00')
 
 
 
@@ -24,39 +27,86 @@ class Requests:
         u = Users(self.clientId)
         if self.code == 100 :
             print('the code is 100')
-            name=self.payload[0].rstrip().decode("utf-8")
-            pKey=self.payload[1].rstrip().decode("utf-8")
+            name=self.payload[0].decode()
+            name=name.rstrip('\x00')
+            pKey=self.payload[1].decode()
+            pKey=pKey.rstrip('\x00')
             print(name,pKey)
             newUser = u.createUser(name,pKey)
             if newUser[0]!=9000:
                 print('the new user is',name,pKey,newUser[1] )
-            return newUser
+                packpayload=self.buildReturnPayload(newUser[1],'16s')
+                packheader = self.buildReturnHeader(newUser[0],packpayload[0])
+                return (packheader,packpayload)
+            else:
+                packheader = self.buildReturnHeader(newUser[0],0)
+                return (packheader,)
         
         elif self.code == 101:
             print(self.pSize)
             if self.pSize == 0:
                 print("request - get all users")
                 listOfUsers = u.getUsersList()
-                return listOfUsers
+                if listOfUsers[0]!=9000:
+                    pldContent=listOfUsers[1]
+                    packpayload=self.buildReturnPayload(pldContent,'16s255s'*len(pldContent))
+                    print('pldContent ',pldContent)
+                    packheader = self.buildReturnHeader(listOfUsers[0],packpayload[0])
+                    return (packheader,packpayload)
+                else:
+                    packheader = self.buildReturnHeader(listOfUsers[0],0)
+                    return (packheader,)
+
             else:
-                return (9000, 'psize should be 0')
+                packheader=self.buildReturnHeader(9000,0)
+                return (packheader,)
+                # return (9000, 'psize should be 0')
+           
                 
         elif self.code == 102:
             print('request - get public key')
-            cid=self.payload[0].rstrip().decode("utf-8")
+            cid = self.payload[0].decode()
+            cid = cid.rstrip('\x00')
             publicKey = u.getPublicKey(cid)
-            buildReturnObject()
-            return publicKey
+            # returnValue = buildReturnObject(publicKey,'16s160s')
+            if publicKey[0]!=9000:
+                packpayload=self.buildReturnPayload(publicKey[1],'16s160s')
+                packheader = self.buildReturnHeader(publicKey[0],packpayload[0])
+                return (packheader,packpayload)
+            else:
+                packheader = self.buildReturnHeader(publicKey[0],0)
+                return (packheader,)
+
 
 
         elif self.code==103:
             print('req - send message')
-            sendMessage = u.sendMessage(self.payload['cid'],self.payload['messageType'],self.payload['contentSize'],self.payload['content'])
-            return sendMessage
+            cid=self.payload[0].decode()
+            cid=cid.rstrip('\x00')
+            messageType=self.payload[1].decode()
+            messageType=messageType.rstrip('\x00')
+            size=self.payload[2].decode()
+            size=size.rstrip('\x00')
+            content=self.payload[3].decode()
+            content=content.rstrip('\x00')
+            sendMessage = u.sendMessage(cid,messageType,size,content)
+            if sendMessage[0]!=9000:
+                packpayload=self.buildReturnPayload(sendMessage[1],'16s160s')#replace format
+                packheader = self.buildReturnHeader(sendMessage[0],packpayload[0])
+                return (packheader,packpayload)
+            else:
+                packheader = self.buildReturnHeader(sendMessage[0],0)
+                return (packheader,)
 
         elif self.code==104:
             getMessages = u.getMessages()
-            return getMessages
+            if getMessages[0]!=9000:
+                packpayload=self.buildReturnPayload(getMessages[1],'16s160s')#replace format
+                packheader = self.buildReturnHeader(getMessages[0],packpayload[0])
+                return (packheader,packpayload)
+            else:
+                packheader = self.buildReturnHeader(getMessages[0],0)
+                return (packheader,)
 
 
             
@@ -65,20 +115,27 @@ class Requests:
 
         # other codes should give exist uName for every request
 
-    def buildReturnObject(self,obj):
-        pass
+    def buildReturnHeader(self,resCode,size=0):
+        code=int(resCode)
+        version=int(2)
+        payloadSize=int(size)
+        header=(version,code,payloadSize)
+        # packedHeader = struct.Struct('bbi').pack(*header)
+        packedHeader = struct.pack('BHI',version,code,payloadSize)
+
+        
+        return packedHeader
+
+    def buildReturnPayload(self,pld,formt):
+        payload=pld
+        payloadSize=sys.getsizeof(payload) #getsizeof payload or getsizeof packed payload
+        packedPayload = struct.Struct(formt).pack(*payload)
+        return (payloadSize,packedPayload)
+
+            
         # build the object to return to the client maybe use struct.pack
         #answer header: version, code, payload size, payload
 
 
 
 
-# 1) Register
-# 2) Request for clients list
-# 3) Request for public key
-# 4) Request for waiting messages     
-# 5) Send a text message
-# 51) Send a request for symmetric key
-# 52) Send your symmetric key
-# 0) Exit client
-        

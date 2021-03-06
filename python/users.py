@@ -6,6 +6,7 @@ import time
 import uuid 
 from datetime import datetime
 from messages import Message
+import random, string
 
 
 class Users:
@@ -21,12 +22,13 @@ class Users:
         print(isUserExist)
         res=isUserExist.fetchall()
         if len(res)==0:
-            id = str(uuid.uuid4())
+            # id = str(uuid.uuid4())
+            id=''.join(random.choices(string.ascii_letters + string.digits, k=16))
             try:
                 self.c.execute('''INSERT INTO clients (ID, UNAME, publicKey,LastSeen) values (?,?,?,?)''',(id,n,pKey,str(now)))  
                 self.conn.commit()
                 time.sleep(3)
-                return (1000,id)
+                return (1000,(id,))
             except Exception:
                 return (9000,'create user FAILED reason '+str(Exception))
                 
@@ -36,7 +38,8 @@ class Users:
         
 
     def getUsersList(self):
-        if self.cid == None:
+        correctCid=self.isCidCorrect()
+        if correctCid==False:
             return (9000,'no client id')
         print("in getUsersList")
         allUsersList=[]
@@ -45,9 +48,12 @@ class Users:
         for user in allUsers:
             if user[0]!=self.cid:
                 allUsersList.append(user)
-        return (1001,allUsersList)
+        return (1001,(allUsersList,))
 
     def getPublicKey(self, cid):
+        correctCid=self.isCidCorrect()
+        if correctCid==False:
+            return (9000,'no client id')
         try:
             publicKeyValue = self.c.execute('''SELECT publicKey FROM clients WHERE ID=?''',(cid,))
             res = publicKeyValue.fetchall()
@@ -55,36 +61,42 @@ class Users:
                 return (9000,"ERROR getting the user by client id")
             else:
                 publicKey = [val for val in publicKeyValue]
-                return (1002,publicKey[0], cid)
+                return (1002,(publicKey[0], cid))
         except Exception:
             print(Exception)
             return (9000,"could not ask for user's public key")
 
     def sendMessage(self, cid, messageType, contentSize, content):
+        correctCid=self.isCidCorrect()
+        if correctCid==False:
+            return (9000,'no client id')
         try:
             type = int(messageType)
         except Exception:
             return(9000,'wrong type of message')
     
         m = Message(self.cid)
-        if messageType == 1:
-            res = m.getSimetricKey(cid)
-        
-        elif messageType == 2:
-            res = m.sendSymetricKey(cid)
+        res = m.sendMessage(cid,messageType,content)
 
-        elif messageType == 3:
-            res = m.sendMessage(cid)
 
-        else:
-            return (9000, 'message has wrong type')
-
-        return (1003,res)
+        return res
 
     def getMessages(self):
+        correctCid=self.isCidCorrect()
+        if correctCid==False:
+            return (9000,'no client id')
         m=Message(self.cid)
         messsgesList = m.getAllMessages()
-        return messsgesList    
+        return messsgesList  
+
+    def isCidCorrect(self):
+        print(self.cid)
+        cidd=self.cid
+        isUserExist = self.c.execute("SELECT * FROM clients WHERE ID=?", (self.cid,))
+        res = isUserExist.fetchall()
+        if len(res)!=1:
+            return False
+        return True
 
 
     
