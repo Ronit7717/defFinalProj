@@ -1,0 +1,106 @@
+﻿  pch.cpp
+  rsa_example.cpp
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(18): error C2653: 'CryptoPP': is not a class or namespace name
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(18): error C2065: 'AutoSeededRandomPool': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(18): error C2146: syntax error: missing ';' before identifier 'rng'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(18): error C2065: 'rng': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(19): error C2653: 'CryptoPP': is not a class or namespace name
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(19): error C2065: 'InvertibleRSAFunction': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(19): error C2146: syntax error: missing ';' before identifier 'privkey'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(19): error C2065: 'privkey': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(20): error C2065: 'privkey': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(20): error C2065: 'rng': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(24): error C2653: 'CryptoPP': is not a class or namespace name
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(24): error C2065: 'Base64Encoder': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(24): error C2146: syntax error: missing ';' before identifier 'privkeysink'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(24): error C2061: syntax error: identifier 'FileSink'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(24): error C3861: 'privkeysink': identifier not found
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(25): error C2065: 'privkey': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(25): error C2065: 'privkeysink': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(26): error C2065: 'privkeysink': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(30): error C2653: 'CryptoPP': is not a class or namespace name
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(30): error C2065: 'RSAFunction': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(30): error C2146: syntax error: missing ';' before identifier 'pubkey'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(30): error C2065: 'privkey': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(30): error C3861: 'pubkey': identifier not found
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(32): error C2653: 'CryptoPP': is not a class or namespace name
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(32): error C2065: 'Base64Encoder': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(32): error C2146: syntax error: missing ';' before identifier 'pubkeysink'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(32): error C2061: syntax error: identifier 'FileSink'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(32): error C3861: 'pubkeysink': identifier not found
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(33): error C2065: 'pubkey': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(33): error C2065: 'pubkeysink': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(34): error C2065: 'pubkeysink': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(40): error C2653: 'CryptoPP': is not a class or namespace name
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(40): error C2065: 'ByteQueue': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(40): error C2146: syntax error: missing ';' before identifier 'bytes'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(40): error C2065: 'bytes': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(41): error C2653: 'CryptoPP': is not a class or namespace name
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(41): error C2065: 'FileSource': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(41): error C2146: syntax error: missing ';' before identifier 'file'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(41): error C2061: syntax error: identifier 'Base64Decoder'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(41): error C3861: 'file': identifier not found
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(42): error C2065: 'file': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(42): error C2065: 'bytes': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(43): error C2065: 'bytes': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(44): error C2653: 'CryptoPP': is not a class or namespace name
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(44): error C2065: 'PrivateKey': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(44): error C2146: syntax error: missing ';' before identifier 'privateKey'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(44): error C2065: 'privateKey': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(45): error C2065: 'privateKey': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(45): error C2065: 'bytes': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(47): error C2653: 'CryptoPP': is not a class or namespace name
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(47): error C2065: 'RSAFunction': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(47): error C2146: syntax error: missing ';' before identifier 'pubkey'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(47): error C2065: 'privateKey': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(47): error C3861: 'pubkey': identifier not found
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(48): error C2653: 'CryptoPP': is not a class or namespace name
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(48): error C2065: 'Base64Encoder': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(48): error C2146: syntax error: missing ';' before identifier 'pubkeysink'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(48): error C2061: syntax error: identifier 'FileSink'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(48): error C3861: 'pubkeysink': identifier not found
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(49): error C2065: 'pubkey': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(49): error C2065: 'pubkeysink': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(50): error C2065: 'pubkeysink': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(60): error C2653: 'CryptoPP': is not a class or namespace name
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(60): error C2065: 'AutoSeededRandomPool': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(60): error C2146: syntax error: missing ';' before identifier 'rng'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(60): error C2065: 'rng': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(63): error C2653: 'CryptoPP': is not a class or namespace name
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(63): error C2065: 'ByteQueue': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(63): error C2146: syntax error: missing ';' before identifier 'bytes'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(63): error C2065: 'bytes': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(64): error C2653: 'CryptoPP': is not a class or namespace name
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(64): error C2065: 'FileSource': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(64): error C2146: syntax error: missing ';' before identifier 'file'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(64): error C2061: syntax error: identifier 'Base64Decoder'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(64): error C3861: 'file': identifier not found
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(65): error C2065: 'file': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(65): error C2065: 'bytes': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(66): error C2065: 'bytes': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(67): error C2653: 'CryptoPP': is not a class or namespace name
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(67): error C2065: 'PublicKey': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(67): error C2146: syntax error: missing ';' before identifier 'pubKey'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(67): error C2065: 'pubKey': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(68): error C2065: 'pubKey': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(68): error C2065: 'bytes': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(75): error C2653: 'CryptoPP': is not a class or namespace name
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(75): error C2065: 'byte': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(75): error C2146: syntax error: missing ';' before identifier 'buf'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(75): error C2065: 'buf': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(76): error C2653: 'CryptoPP': is not a class or namespace name
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(76): error C2065: 'ArraySink': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(76): error C2146: syntax error: missing ';' before identifier 'as'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(76): error C2065: 'buf': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(76): error C3861: 'as': identifier not found
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(77): error C2065: 'pubKey': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(77): error C2065: 'as': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(81): error C2653: 'CryptoPP': is not a class or namespace name
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(81): error C2065: 'byte': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(81): error C2146: syntax error: missing ';' before identifier 'buf2'
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(81): error C2065: 'buf2': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(82): error C2065: 'buf2': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(82): error C2065: 'buf': undeclared identifier
+c:\users\hp\downloads\cryptopp_examples (1)\cryptopp_examples\cryptopp_examples\rsa_example.cpp(82): fatal error C1003: error count exceeds 100; stopping compilation
+  ConsoleApplication2.cpp
+  Generating Code...
