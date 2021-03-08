@@ -6,7 +6,17 @@
 // #include "Request.cpp"
 #include "LittleReq.cpp"
 #include <winsock2.h>
+// #include "aes.h"
+// #include "C:\Users\yshreiber\Desktop\mmn15\from ronit\defFinalProj\crypto\aes.h"
 #include "boost/asio.hpp"
+#include <iostream>
+#include <fstream>
+#include "ResponseUsersList.cpp"
+#include "ResponsePublicKey.cpp"
+#include "ResponseGetWaitingMessages.cpp"
+#include "MessagePayload.cpp"
+
+
 using  boost::asio::ip::tcp;
 using namespace std;
 void clear(char message[], int length){
@@ -27,84 +37,28 @@ void printMenu(){
     "?" << "\n";
     }
 
-
-std ::array<uint8_t, sizeof(LittleReq)> createRequest(char req[1024]){
-
-    std ::array<uint8_t, sizeof(LittleReq) > buffer;
-    auto* header = reinterpret_cast<LittleReq*>(buffer.data());  
-    char a[16] = "y6a4567fghjcvbn";
-    header->setClientId(a);
-    header->setVersion(2);
-    // Payload *p;
-
-
-    switch((int)req[0]-'0') {
-    case 1:
-    {
-     std::cout << "user is asking to register";           
-        header->setCode(100);
-        char name[255] = "64f3f63985f04beb81a0e43321880182\0";
-        string publicKey = "user";
-        RegisterPayload *p = new RegisterPayload(name, publicKey);
-        header->setPayloadSize(sizeof(*p));
-        // s.send(boost::asio::buffer(buffer));
-//     std ::array<uint8_t, sizeof(RegisterPayload) > buffer2;
-//     auto* header2 = reinterpret_cast<RegisterPayload*>(buffer2.data());
-// header2->setName(name);
-// header2->setPublicKey(publicKey);
-        // s.send(boost::asio::buffer(buffer2));
-
-        break;
-    }
-        
-    case 2:
-    {
-        header->setCode(101);
-        header->setPayloadSize(1600);
-    
-        break;
-}
-    case 3:
-    {
-        header->setCode(102);
-        header->setPayloadSize(1600);
-        break;
+void getClientId(){
+    string myText;
+int i =0;
+ ofstream myfile ("me.txt");
+  if (myfile.is_open())
+  {
+    ifstream MyReadFile("me.txt");
+    while (getline (MyReadFile, myText)) {
+  // Output the text from the file
+  std::cout << myText << "\n";
+  i++;
+  MyReadFile.close();
 }
 
-    case 4:
-     {
-        header->setCode(104);
-        header->setPayloadSize(1600);
-        break;
-}
-    case 5:
-     {
-         header->setCode(103);
-        header->setPayloadSize(1600);
-        break;
-}
-    case 51:
-     {
-        header->setCode(100);
-        header->setPayloadSize(1600);
-        break;
-}
-    case 52:
-     {
-        header->setCode(100);
-        header->setPayloadSize(1600);
-        break;
-}
-    case 0:
-     {
-        header->setCode(100);
-        header->setPayloadSize(1600);
-        break;
-}
-    };
+// Close the file
 
-    return buffer;
-}    
+
+}
+ int f = i;
+}
+
+
 
 createGeneralHeader(auto* header){
     char a[16] = "y6a4567fghjcvbn";
@@ -170,30 +124,45 @@ std ::array<uint8_t, sizeof(LittleReq) > header4(){
 }
 
 
-std ::array<uint8_t, sizeof(LittleReq) > header5(){
+std ::array<uint8_t, sizeof(LittleReq) > header5(int textSize){
     std ::array<uint8_t, sizeof(LittleReq) > buffer;
     auto* header = reinterpret_cast<LittleReq*>(buffer.data());  
     createGeneralHeader(header);
     header->setCode(103);
-    header->setPayloadSize(0);
+    header->setPayloadSize(textSize);
     return buffer;
 }
 
 
-std ::array<uint8_t, sizeof(PublicKeyPayload) >  payload5(){
-    std ::array<uint8_t, sizeof(PublicKeyPayload) > buffer;
-    auto* header = reinterpret_cast<PublicKeyPayload*>(buffer.data());
-    char clientId[16] = "64b81a0e0182\0";
+std ::array<uint8_t, sizeof(MessagePayload) >  payload5(){
+    std ::array<uint8_t, sizeof(MessagePayload) > buffer;
+    auto* header = reinterpret_cast<MessagePayload*>(buffer.data());
+    char clientId[16];
+    clear(clientId, 16);
+    std::cout << "Enter a client name." << "\n";
+    std::cin.getline(clientId, 16);
+    // char clientId[16] = "64b81a0e0182\0";
     header->setClientId(clientId);
+    char yehudit[255];
+    clear(yehudit, 255);
+    std::cout << "Enter a text message." << "\n";
+    std::cin.getline(yehudit, 255);
+    header->setTextMessage(yehudit);
+    header->setPayloadSize();
+    header->setMessageType(3);
     return buffer;
 }
 
 
+void printMessage(char* content, char messageType)
+{
 
-
+}
 
 int main(int argc, char* argv[])
 {
+
+    getClientId();
         char name[255] = "64f3f63985f04beb81a0e43321880182\0";
         string publicKey = "user";
         RegisterPayload *p = new RegisterPayload(name, publicKey);
@@ -222,60 +191,76 @@ int main(int argc, char* argv[])
             if((int)request[0]-'0' == 1){
             std ::array<uint8_t, sizeof(LittleReq) > header = header1();
             std ::array<uint8_t, sizeof(RegisterPayload) > payload = payload1();
-            // char name[255] = "64f3f63985f04beb81a0e43321880182\0";
-            // char publicKey[32] = "user";
-
-            // std ::array<uint8_t, sizeof(RegisterPayload) > buffer2;
-            // auto* header2 = reinterpret_cast<RegisterPayload*>(buffer2.data());
-            // header2->setName(name);
-            // header2->setPublicKey(publicKey);
             s.send(boost::asio::buffer(header));
             s.send(boost::asio::buffer(payload));
             std ::array<uint8_t, sizeof(LittleReq) > header1;
             s.receive(boost::asio::buffer(header1));
             auto* headerdd = reinterpret_cast<LittleReq*>(header1.data());
-
-
-              int a = 9;
+            int a = 9;
             }
+
             else if ((int)request[0]-'0' == 2){
             std ::array<uint8_t, sizeof(LittleReq) > header = header2();
-              s.send(boost::asio::buffer(header));
-              std ::array<uint8_t, sizeof(LittleReq) > header1;
-              s.receive(boost::asio::buffer(header1));
-              int a = 9;
-              }
+            s.send(boost::asio::buffer(header));
+            std ::array<uint8_t, sizeof(LittleReq) > header1;
+            s.receive(boost::asio::buffer(header1));
+            auto* res = reinterpret_cast<LittleReq*>(header1.data());
+            int numOfUsers = res->getPayloadSize()/271;
+            for (int i = 0; i < numOfUsers; i++){
+                std ::array<uint8_t, sizeof(ResponseUsersList) > header1;
+                s.receive(boost::asio::buffer(header1)); 
+                auto* resPayload = reinterpret_cast<ResponseUsersList*>(header1.data());
+                std::cout << resPayload->getClientName() << "\n";
+               }
+            }
+
             else if ((int)request[0]-'0' == 3){
             std ::array<uint8_t, sizeof(LittleReq) > header = header3();
             std ::array<uint8_t, sizeof(PublicKeyPayload) > payload = payload3();
-              s.send(boost::asio::buffer(header));
-              s.send(boost::asio::buffer(payload));
-               std ::array<uint8_t, sizeof(LittleReq) > header1;
-              s.receive(boost::asio::buffer(header1));
-              int a = 9;
-              }
+            s.send(boost::asio::buffer(header));
+            s.send(boost::asio::buffer(payload));
+            std ::array<uint8_t, sizeof(LittleReq) > header1;
+            s.receive(boost::asio::buffer(header1));
 
-            else if ((int)request[0]-'0' == 4){
+            std ::array<uint8_t, sizeof(ResponsePublicKey) > payloadRes;
+            s.receive(boost::asio::buffer(payloadRes)); 
+            auto* resPayload = reinterpret_cast<ResponsePublicKey*>(header1.data());
+            std::cout << resPayload->getPublicKey() << "\n";
+            }
+
+            else if ((int)request[0]-'0' == 4){// ask for waiting messages. 104
             std ::array<uint8_t, sizeof(LittleReq) > header = header4();
               s.send(boost::asio::buffer(header));
-               std ::array<uint8_t, sizeof(LittleReq) > header1;
+              std ::array<uint8_t, sizeof(LittleReq) > header1;
               s.receive(boost::asio::buffer(header1));
-              int a = 9;
-              }
+              auto* res = reinterpret_cast<LittleReq*>(header1.data());
+              int sizeOfAllMessages = res->getPayloadSize();
+              while (sizeOfAllMessages){
+              std ::array<uint8_t, sizeof(ResponseGetWaitingMessages) > message;
+              s.receive(boost::asio::buffer(message));
+              auto* res = reinterpret_cast<ResponseGetWaitingMessages*>(message.data());
+              int messageSize = res->getMessageSize();
+              sizeOfAllMessages -= messageSize;
+              std ::array<uint8_t, sizeof(char) > content;
+              s.receive(boost::asio::buffer(content));
+              auto* resContent = reinterpret_cast<char*>(content.data());
+              printMessage(resContent,  res->getMessageType());
+            }
+           }
             
-            else if ((int)request[0]-'0' == 5){
-            std ::array<uint8_t, sizeof(LittleReq) > header = header5();
-            std ::array<uint8_t, sizeof(PublicKeyPayload) > payload = payload5();
-              s.send(boost::asio::buffer(header));
-              s.send(boost::asio::buffer(payload));
-               std ::array<uint8_t, sizeof(LittleReq) > header1;
-              s.receive(boost::asio::buffer(header1));
-              int a = 9;
-              }
+            else if ((int)request[0]-'0'    == 5){
+            std ::array<uint8_t, sizeof(MessagePayload) > payload = payload5();
+            auto* payloadData = reinterpret_cast<MessagePayload*>(payload.data());
+            int textSize = payloadData->getPayloadSize();
+            std ::array<uint8_t, sizeof(LittleReq) > header = header5(textSize);
+            s.send(boost::asio::buffer(header));
+            s.send(boost::asio::buffer(payload));
+            std ::array<uint8_t, sizeof(LittleReq) > header1;
+            s.receive(boost::asio::buffer(header1));
+            }
 
             
             
-            char reply[max_length];
 
         }
     } catch (std::exception& e){

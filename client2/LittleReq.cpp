@@ -34,6 +34,10 @@ public:
         this->payloadSize = payloadSize;    
     }
 
+    int getPayloadSize(){
+        return this->payloadSize; 
+    }
+
     // void setPayload(Payload payload){
     //     this->payload = payload;    
     // }
