@@ -2,16 +2,22 @@ import sqlite3
 import uuid
 import sys
 import random, string
+from datetime import datetime
 
-
-x = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
-#print(x)
+x = ''.join(random.choices(string.ascii_letters + string.digits, k=15))
+y = ''.join(random.choices(string.ascii_letters + string.digits, k=15))
+z = ''.join(random.choices(string.ascii_letters + string.digits, k=15))
 
 
 conn=sqlite3.connect('server.db')
 
 c=conn.cursor()
 
+now = datetime.now()
+#c.execute('''INSERT INTO clients (ID, UNAME, publicKey,LastSeen) values (?,?,?,?)''',(x,'ronit','ojpwa//',str(now)))
+#c.execute('''INSERT INTO clients (ID, UNAME, publicKey,LastSeen) values (?,?,?,?)''',(y,'ronit2','pKey12345',str(now)))
+#c.execute('''INSERT INTO clients (ID, UNAME, publicKey,LastSeen) values (?,?,?,?)''',(z,'ronit55','pKey2345',str(now)))
+conn.commit()
 x=c.execute('''SELECT * FROM clients''')
 
 y=x.fetchall()

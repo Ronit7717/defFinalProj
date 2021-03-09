@@ -14,7 +14,7 @@ class Requests:
         self.version = req[1]
         self.code = req[2]
         self.pSize = req[3]
-        self.payload=payload.decode().rstrip('\x00')
+        self.payload=payload
 
 
 
@@ -37,7 +37,7 @@ class Requests:
                 print('the new user is',name,pKey,newUser[1] )
                 packpayload=self.buildReturnPayload(newUser[1],'16s')
                 packheader = self.buildReturnHeader(newUser[0],packpayload[0])
-                return (packheader,packpayload)
+                return (packheader,packpayload[1],0)# 0 is the code when the payload don't contain array
             else:
                 packheader = self.buildReturnHeader(newUser[0],0)
                 return (packheader,)
@@ -49,10 +49,10 @@ class Requests:
                 listOfUsers = u.getUsersList()
                 if listOfUsers[0]!=9000:
                     pldContent=listOfUsers[1]
-                    packpayload=self.buildReturnPayload(pldContent,'16s255s'*len(pldContent))
+                    packpayload=self.buildReturnPayloadArr(pldContent[0],'16s255s')
                     print('pldContent ',pldContent)
                     packheader = self.buildReturnHeader(listOfUsers[0],packpayload[0])
-                    return (packheader,packpayload)
+                    return (packheader,packpayload[1],1)
                 else:
                     packheader = self.buildReturnHeader(listOfUsers[0],0)
                     return (packheader,)
@@ -72,7 +72,7 @@ class Requests:
             if publicKey[0]!=9000:
                 packpayload=self.buildReturnPayload(publicKey[1],'16s160s')
                 packheader = self.buildReturnHeader(publicKey[0],packpayload[0])
-                return (packheader,packpayload)
+                return (packheader,packpayload[1])
             else:
                 packheader = self.buildReturnHeader(publicKey[0],0)
                 return (packheader,)
@@ -127,11 +127,18 @@ class Requests:
         return packedHeader
 
     def buildReturnPayload(self,pld,formt):
-        payload=pld
-        payloadSize=sys.getsizeof(payload) #getsizeof payload or getsizeof packed payload
-        packedPayload = struct.Struct(formt).pack(*payload)
+        
+        payloadSize=sys.getsizeof(pld) #getsizeof payload or getsizeof packed payload
+        packedPayload = struct.Struct(formt).pack(*pld)
         return (payloadSize,packedPayload)
 
+    def buildReturnPayloadArr(self,pld,formt):
+        ansArr=[]
+        for i in pld:
+            packedPayload = struct.Struct(formt).pack(*i)
+            ansArr.append(packedPayload)
+        payloadSize=sys.getsizeof(pld) #getsizeof payload or getsizeof packed payload
+        return (payloadSize,ansArr)
             
         # build the object to return to the client maybe use struct.pack
         #answer header: version, code, payload size, payload

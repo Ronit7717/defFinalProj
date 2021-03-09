@@ -43,8 +43,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             action=req.reqAction()
             print('the action ',action)
             conn.sendall(action[0])
-            if(len(action)==2):
-                conn.sendall(action[1])
+            if(len(action)>1):
+                if action[2]==0:
+                    conn.sendall(action[1])
+                elif action[2]==1:
+                    for i in action[1]:
+                        conn.sendall(i)
     conn.close()
 
 

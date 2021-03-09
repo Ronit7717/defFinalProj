@@ -23,12 +23,12 @@ class Users:
         res=isUserExist.fetchall()
         if len(res)==0:
             # id = str(uuid.uuid4())
-            id=''.join(random.choices(string.ascii_letters + string.digits, k=16))
+            id=''.join(random.choices(string.ascii_letters + string.digits, k=15))
             try:
                 self.c.execute('''INSERT INTO clients (ID, UNAME, publicKey,LastSeen) values (?,?,?,?)''',(id,n,pKey,str(now)))  
                 self.conn.commit()
                 time.sleep(3)
-                return (1000,(id,))
+                return (1000,(id.encode(),))
             except Exception:
                 return (9000,'create user FAILED reason '+str(Exception))
                 
@@ -47,7 +47,9 @@ class Users:
         print("our cid ",self.cid)
         for user in allUsers:
             if user[0]!=self.cid:
-                allUsersList.append(user)
+                fixing = [x.encode('utf-8') for x in user]
+                fixTuple = tuple(fixing)
+                allUsersList.append(fixTuple)
         return (1001,(allUsersList,))
 
     def getPublicKey(self, cid):
@@ -61,7 +63,7 @@ class Users:
                 return (9000,"ERROR getting the user by client id")
             else:
                 publicKey = [val for val in publicKeyValue]
-                return (1002,(publicKey[0], cid))
+                return (1002,(publicKey[0].encode(), cid.encode()))
         except Exception:
             print(Exception)
             return (9000,"could not ask for user's public key")
@@ -92,7 +94,7 @@ class Users:
     def isCidCorrect(self):
         print(self.cid)
         cidd=self.cid
-        isUserExist = self.c.execute("SELECT * FROM clients WHERE ID=?", (self.cid,))
+        isUserExist = self.c.execute('''SELECT * FROM clients WHERE ID=?''', (self.cid,) )
         res = isUserExist.fetchall()
         if len(res)!=1:
             return False
