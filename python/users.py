@@ -63,7 +63,8 @@ class Users:
                 return (9000,"ERROR getting the user by client id")
             else:
                 publicKey = [val for val in publicKeyValue]
-                return (1002,(publicKey[0].encode(), cid.encode()))
+                publicKey = res[0]
+                return (1002,(cid.encode(),publicKey[0].encode()))
         except Exception:
             print(Exception)
             return (9000,"could not ask for user's public key")

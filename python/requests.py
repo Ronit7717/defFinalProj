@@ -72,7 +72,7 @@ class Requests:
             if publicKey[0]!=9000:
                 packpayload=self.buildReturnPayload(publicKey[1],'16s160s')
                 packheader = self.buildReturnHeader(publicKey[0],packpayload[0])
-                return (packheader,packpayload[1])
+                return (packheader,packpayload[1],0)
             else:
                 packheader = self.buildReturnHeader(publicKey[0],0)
                 return (packheader,)
