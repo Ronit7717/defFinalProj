@@ -25,12 +25,13 @@ class Message:
         except Exception:
             return (9000,'could not get messages list')
 
-    def sendMessage(self,clientId,type,content):
+    def sendMessage(self,name,type,content):
         if type<1 or type>4:
             return (9000,'wrong type')
         if type==1:
             content='Request for symmetric key'
         try:
+            toClient = self.c.execute('''SELECT ID FROM clients where  uname=?''',(name,))
             self.c.execute('''INSERT INTO messages (ToClient, FromClient, Type ,Content) values (?,?,?,?)''',(clientId,self.cid,type,content,))
             self.c.commit()
             messageId=self.c.lastrowid

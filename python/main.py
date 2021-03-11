@@ -37,6 +37,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             elif(message_type == 102):
                 print("message is 102.")
                 payload = struct.unpack('16s', bytes(conn.recv(struct.calcsize('16s'))))
+            elif(message_type == 103):
+                payload = struct.unpack('16sbi255s', bytes(conn.recv(struct.calcsize('16s1si255s'))))
 
             elif(message_type == 103):
                 print("message is 102.")
