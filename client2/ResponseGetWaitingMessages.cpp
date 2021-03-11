@@ -2,14 +2,15 @@ class ResponseGetWaitingMessages
 {
 private:
     char clientId[16];
-    char messageId[4];
+    int messageId;
     char messageType;
     int messageSize;
+    char content[255];
 public:
  char* getClientId(){
         return this->clientId;
     }
-     char* getMessageId(){
+     int getMessageId(){
         return this->messageId;
     }
      char getMessageType(){
@@ -19,6 +20,11 @@ public:
      int getMessageSize(){
         return this->messageSize;
     }
+
+    char* getContent(){
+        return this->content;
+    }
+
 
 
 
