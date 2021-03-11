@@ -9,9 +9,18 @@ class Message:
 
     def getAllMessages(self):
         try:
-            sqlList=self.c.execute('''SELECT * FROM messages WHERE ToClient=?''',(self.cid,))
+            messagesList = []
+            sqlList=self.c.execute('''SELECT fromClient, ID, type,280 , content FROM messages WHERE ToClient=?''',(self.cid,))
             res=sqlList.fetchall()
-            messagesList = [item for item in res]
+            for message in res:
+                fixing = []
+                fixing.append(message[0].encode())
+                fixing.append(message[1])
+                fixing.append(message[2].encode())
+                fixing.append(message[3])
+                fixing.append(message[4].encode())
+                fixTuple = tuple(fixing)
+                messagesList.append(fixTuple)
             return (1004,(messagesList,))
         except Exception:
             return (9000,'could not get messages list')

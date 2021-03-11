@@ -35,7 +35,7 @@ class Requests:
             newUser = u.createUser(name,pKey)
             if newUser[0]!=9000:
                 print('the new user is',name,pKey,newUser[1] )
-                packpayload=self.buildReturnPayload(newUser[1],'16s')
+                packpayload=self.buildReturnPayload(newUser[1],'16s', 16)
                 packheader = self.buildReturnHeader(newUser[0],packpayload[0])
                 return (packheader,packpayload[1],0)# 0 is the code when the payload don't contain array
             else:
@@ -70,7 +70,7 @@ class Requests:
             publicKey = u.getPublicKey(cid)
             # returnValue = buildReturnObject(publicKey,'16s160s')
             if publicKey[0]!=9000:
-                packpayload=self.buildReturnPayload(publicKey[1],'16s160s')
+                packpayload=self.buildReturnPayload(publicKey[1],'16s160s', 176)
                 packheader = self.buildReturnHeader(publicKey[0],packpayload[0])
                 return (packheader,packpayload[1],0)
             else:
@@ -91,7 +91,7 @@ class Requests:
             content=content.rstrip('\x00')
             sendMessage = u.sendMessage(cid,messageType,size,content)
             if sendMessage[0]!=9000:
-                packpayload=self.buildReturnPayload(sendMessage[1],'16s160s')#replace format
+                packpayload=self.buildReturnPayload(sendMessage[1],'16s160s', 176)#replace format
                 packheader = self.buildReturnHeader(sendMessage[0],packpayload[0])
                 return (packheader,packpayload)
             else:
@@ -101,9 +101,9 @@ class Requests:
         elif self.code==104:
             getMessages = u.getMessages()
             if getMessages[0]!=9000:
-                packpayload=self.buildReturnPayload(getMessages[1],'16s160s')#replace format
+                packpayload=self.buildReturnPayload(getMessages[1][0][0],'16si1si255s', 280)#replace format
                 packheader = self.buildReturnHeader(getMessages[0],packpayload[0])
-                return (packheader,packpayload)
+                return (packheader,packpayload[1], 0)
             else:
                 packheader = self.buildReturnHeader(getMessages[0],0)
                 return (packheader,)
@@ -126,10 +126,10 @@ class Requests:
         
         return packedHeader
 
-    def buildReturnPayload(self,pld,formt):
+    def buildReturnPayload(self,pld,formt, payloadSize):
         #getsizeof payload or getsizeof packed payload
         packedPayload = struct.Struct(formt).pack(*pld)
-        payloadSize=sys.getsizeof(packedPayload)
+        # payloadSize=sys.getsizeof(packedPayload)
         return (payloadSize,packedPayload)
 
     def buildReturnPayloadArr(self,pld,formt):

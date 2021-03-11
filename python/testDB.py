@@ -18,8 +18,9 @@ now = datetime.now()
 #c.execute('''INSERT INTO clients (ID, UNAME, publicKey,LastSeen) values (?,?,?,?)''',(y,'ronit2','pKey12345',str(now)))
 #c.execute('''INSERT INTO clients (ID, UNAME, publicKey,LastSeen) values (?,?,?,?)''',(z,'ronit55','pKey2345',str(now)))
 conn.commit()
-x=c.execute('''SELECT * FROM clients''')
-
+# c.execute('''INSERT INTO messages  (ToClient, FromClient, Type ,Content) values (?,?,?,?)''',('wWqm1XlbrVvt1SP','xOwbl0UZ5lnWoBn' ,3,"hi this is text from testDB",))  
+x=c.execute('''SELECT * FROM messages''')
+conn.commit()
 y=x.fetchall()
 for row in y:
     print(row)
