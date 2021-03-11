@@ -69,7 +69,7 @@ class Users:
             print(Exception)
             return (9000,"could not ask for user's public key")
 
-    def sendMessage(self, cid, messageType, contentSize, content):
+    def sendMessage(self, name, messageType, contentSize, content):
         correctCid=self.isCidCorrect()
         if correctCid==False:
             return (9000,'no client id')
@@ -79,7 +79,7 @@ class Users:
             return(9000,'wrong type of message')
     
         m = Message(self.cid)
-        res = m.sendMessage(cid,messageType,content)
+        res = m.sendMessage(name,messageType,content)
 
 
         return res
