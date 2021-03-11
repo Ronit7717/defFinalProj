@@ -56,7 +56,7 @@ int i =0;
 
 
 
-createGeneralHeader(auto* header){
+void createGeneralHeader(auto* header){
     char a[16] = "wWqm1XlbrVvt1SP";
     header->setClientId(a);
     header->setVersion(2);
@@ -240,20 +240,23 @@ int main(int argc, char* argv[])
             else if ((int)request[0]-'0' == 4){// ask for waiting messages. 104
             std ::array<uint8_t, sizeof(LittleReq) > header = header4();
               s.send(boost::asio::buffer(header));
-              std ::array<uint8_t, sizeof(LittleReq) > header1;
-              s.receive(boost::asio::buffer(header1));
-              auto* res = reinterpret_cast<LittleReq*>(header1.data());
+
+              std ::array<uint8_t, sizeof(ResponseHeader) > payloadHeader;
+              s.receive(boost::asio::buffer(payloadHeader));
+              auto* res = reinterpret_cast<ResponseHeader*>(payloadHeader.data());
               int sizeOfAllMessages = res->getPayloadSize();
               while (sizeOfAllMessages){
               std ::array<uint8_t, sizeof(ResponseGetWaitingMessages) > message;
               s.receive(boost::asio::buffer(message));
               auto* res = reinterpret_cast<ResponseGetWaitingMessages*>(message.data());
               int messageSize = res->getMessageSize();
+              char*  yehudit = res->getContent();
               sizeOfAllMessages -= messageSize;
-              std ::array<uint8_t, sizeof(char) > content;
-              s.receive(boost::asio::buffer(content));
-              auto* resContent = reinterpret_cast<char*>(content.data());
-              printMessage(resContent,  res->getMessageType());
+               std::cout << res->getContent()<< "\n";
+            //   std ::array<uint8_t, sizeof(char) > content;
+            //   s.receive(boost::asio::buffer(content));
+            //   auto* resContent = reinterpret_cast<char*>(content.data());
+              //printMessage(resContent,  res->getMessageType());
             }
            }
             
