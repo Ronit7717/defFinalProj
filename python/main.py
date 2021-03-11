@@ -38,6 +38,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 print("message is 102.")
                 payload = struct.unpack('16s', bytes(conn.recv(struct.calcsize('16s'))))
 
+            elif(message_type == 104): # user asks all witing messages
+                print("message is 104.")
+                
+
 
             req = Requests(data,payload)
             action=req.reqAction()

@@ -127,9 +127,9 @@ class Requests:
         return packedHeader
 
     def buildReturnPayload(self,pld,formt):
-        
-        payloadSize=sys.getsizeof(pld) #getsizeof payload or getsizeof packed payload
+        #getsizeof payload or getsizeof packed payload
         packedPayload = struct.Struct(formt).pack(*pld)
+        payloadSize=sys.getsizeof(packedPayload)
         return (payloadSize,packedPayload)
 
     def buildReturnPayloadArr(self,pld,formt):
@@ -137,7 +137,7 @@ class Requests:
         for i in pld:
             packedPayload = struct.Struct(formt).pack(*i)
             ansArr.append(packedPayload)
-        payloadSize=sys.getsizeof(pld) #getsizeof payload or getsizeof packed payload
+        payloadSize=pld.__len__()*271 #getsizeof payload or getsizeof packed payload
         return (payloadSize,ansArr)
             
         # build the object to return to the client maybe use struct.pack
