@@ -40,6 +40,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             elif(message_type == 103):
                 payload = struct.unpack('16sbi255s', bytes(conn.recv(struct.calcsize('16s1si255s'))))
 
+            elif(message_type == 104): # user asks all witing messages
+                print("message is 104.")
+                
+
 
             req = Requests(data,payload)
             action=req.reqAction()
