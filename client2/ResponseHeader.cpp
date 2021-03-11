@@ -2,7 +2,7 @@ class ResponseHeader
 {
 private:
     char version;
-    char code;
+    short code;
     int payloadSize;
 public:
 
@@ -10,7 +10,7 @@ public:
         return this->version;
     }
 
-    char getCode(){
+    short getCode(){
         return this->code;
     }
 

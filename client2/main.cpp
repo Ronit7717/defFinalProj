@@ -3,11 +3,7 @@
 #include <iostream>
 #include "RegisterPayload.cpp"
 #include "PublicKeyPayload.cpp"
-// #include "Request.cpp"
 #include "LittleReq.cpp"
-#include <winsock2.h>
-// #include "aes.h"
-// #include "C:\Users\yshreiber\Desktop\mmn15\from ronit\defFinalProj\crypto\aes.h"
 #include "boost/asio.hpp"
 #include <iostream>
 #include <fstream>
@@ -15,7 +11,7 @@
 #include "ResponsePublicKey.cpp"
 #include "ResponseGetWaitingMessages.cpp"
 #include "MessagePayload.cpp"
-
+#include "ResponseHeader.cpp"
 
 using  boost::asio::ip::tcp;
 using namespace std;
@@ -61,7 +57,7 @@ int i =0;
 
 
 createGeneralHeader(auto* header){
-    char a[16] = "y6a4567fghjcvbn";
+    char a[16] = "wWqm1XlbrVvt1SP";
     header->setClientId(a);
     header->setVersion(2);
 }
@@ -76,10 +72,13 @@ std ::array<uint8_t, sizeof(LittleReq) > header1(){
     return buffer;
 }
 
+
+
+
 std ::array<uint8_t, sizeof(RegisterPayload) >  payload1(){
     std ::array<uint8_t, sizeof(RegisterPayload) > buffer;
     auto* header = reinterpret_cast<RegisterPayload*>(buffer.data());
-    char name[255] = "64f3f63985f04beb81a0e43321880182\0";
+    char name[255] = "try1f63985f24ddb81a0e43321880182\0";
     char publicKey[32] = "user";
     header->setName(name);
     header->setPublicKey(publicKey);
@@ -107,7 +106,7 @@ std ::array<uint8_t, sizeof(LittleReq) > header3(){
 std ::array<uint8_t, sizeof(PublicKeyPayload) >  payload3(){
     std ::array<uint8_t, sizeof(PublicKeyPayload) > buffer;
     auto* header = reinterpret_cast<PublicKeyPayload*>(buffer.data());
-    char clientId[16] = "64b81a0e0182\0";
+    char clientId[16] = "Qxn20JhYJ1AWttx";
     header->setClientId(clientId);
     return buffer;
 }
@@ -163,7 +162,7 @@ int main(int argc, char* argv[])
 {
 
     getClientId();
-        char name[255] = "64f3f63985f04beb81a0e43321880182\0";
+        char name[255] = "rrf3f63985f04bedd1a0e43321880182\0";
         string publicKey = "user";
         RegisterPayload *p = new RegisterPayload(name, publicKey);
     const int max_length = 1024;
@@ -193,18 +192,26 @@ int main(int argc, char* argv[])
             std ::array<uint8_t, sizeof(RegisterPayload) > payload = payload1();
             s.send(boost::asio::buffer(header));
             s.send(boost::asio::buffer(payload));
-            std ::array<uint8_t, sizeof(LittleReq) > header1;
-            s.receive(boost::asio::buffer(header1));
-            auto* headerdd = reinterpret_cast<LittleReq*>(header1.data());
-            int a = 9;
+            
+            std ::array<uint8_t, sizeof(ResponseHeader) > resHeader;
+            s.receive(boost::asio::buffer(resHeader));
+            auto* respHeader = reinterpret_cast<ResponseHeader*>(resHeader.data());
+            if (respHeader->getCode()== 9000)
+            {
+                std::cout << "Server responded with an error ";
+            }
+            else {
+              //save in me.info name and id
+            }
+            
             }
 
             else if ((int)request[0]-'0' == 2){
             std ::array<uint8_t, sizeof(LittleReq) > header = header2();
             s.send(boost::asio::buffer(header));
-            std ::array<uint8_t, sizeof(LittleReq) > header1;
+            std ::array<uint8_t, sizeof(ResponseHeader) > header1;
             s.receive(boost::asio::buffer(header1));
-            auto* res = reinterpret_cast<LittleReq*>(header1.data());
+            auto* res = reinterpret_cast<ResponseHeader*>(header1.data());
             int numOfUsers = res->getPayloadSize()/271;
             for (int i = 0; i < numOfUsers; i++){
                 std ::array<uint8_t, sizeof(ResponseUsersList) > header1;
@@ -219,12 +226,14 @@ int main(int argc, char* argv[])
             std ::array<uint8_t, sizeof(PublicKeyPayload) > payload = payload3();
             s.send(boost::asio::buffer(header));
             s.send(boost::asio::buffer(payload));
-            std ::array<uint8_t, sizeof(LittleReq) > header1;
+            
+            std ::array<uint8_t, sizeof(ResponseHeader) > header1;
             s.receive(boost::asio::buffer(header1));
+            auto* resHeader = reinterpret_cast<ResponseHeader*>(header1.data());
 
             std ::array<uint8_t, sizeof(ResponsePublicKey) > payloadRes;
             s.receive(boost::asio::buffer(payloadRes)); 
-            auto* resPayload = reinterpret_cast<ResponsePublicKey*>(header1.data());
+            auto* resPayload = reinterpret_cast<ResponsePublicKey*>(payloadRes.data());
             std::cout << resPayload->getPublicKey() << "\n";
             }
 

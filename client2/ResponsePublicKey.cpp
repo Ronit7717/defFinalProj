@@ -2,7 +2,7 @@ class ResponsePublicKey
 {
 private:
     char clientId[16];
-    char publicKey[255];
+    char publicKey[160];
 public:
 
 char* getClientId(){
