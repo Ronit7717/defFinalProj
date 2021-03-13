@@ -12,7 +12,7 @@
 #include "ResponseGetWaitingMessages.cpp"
 #include "MessagePayload.cpp"
 #include "ResponseHeader.cpp"
-
+#include "ResponseMessageSent.cpp"
 using  boost::asio::ip::tcp;
 using namespace std;
 void clear(char message[], int length){
@@ -133,25 +133,48 @@ std ::array<uint8_t, sizeof(LittleReq) > header5(int textSize){
 }
 
 
-std ::array<uint8_t, sizeof(MessagePayload) >  payload5(){
+char* payloadsDiff(char type){
+    if (type == '3')
+    {
+        char yehudit[255];
+        std::cout << "Enter a text message." << "\n";
+        std::cin.getline(yehudit, 255);
+        return yehudit;
+    }
+     else if (type == '2')
+    {
+        char symmetricKey[255] = "this is a symmetric key"; // have to be implemented
+        return symmetricKey;
+    } 
+    else if (type == '1')
+    {
+       return "";
+    }
+}
+
+
+
+
+
+std ::array<uint8_t, sizeof(MessagePayload) >  genericMessagePayload(char type){
     std ::array<uint8_t, sizeof(MessagePayload) > buffer;
     auto* header = reinterpret_cast<MessagePayload*>(buffer.data());
     char clientId[16];
     clear(clientId, 16);
-    std::cout << "Enter a client name." << "\n";
+    std::cout << "Enter a client id." << "\n";
     std::cin.getline(clientId, 16);
     // char clientId[16] = "64b81a0e0182\0";
     header->setClientId(clientId);
-    char yehudit[255];
-    clear(yehudit, 255);
-    std::cout << "Enter a text message." << "\n";
-    std::cin.getline(yehudit, 255);
+
+
+    char* yehudit= payloadsDiff(type);
     header->setTextMessage(yehudit);
     header->setPayloadSize();
-    header->setMessageType(3);
+    header->setMessageType(type);
     return buffer;
-}
 
+    
+}
 
 void printMessage(char* content, char messageType)
 {
@@ -198,7 +221,7 @@ int main(int argc, char* argv[])
             auto* respHeader = reinterpret_cast<ResponseHeader*>(resHeader.data());
             if (respHeader->getCode()== 9000)
             {
-                std::cout << "Server responded with an error ";
+                std::cout << "Server responded with an error "<< "\n";
             }
             else {
               //save in me.info name and id
@@ -259,22 +282,51 @@ int main(int argc, char* argv[])
               //printMessage(resContent,  res->getMessageType());
             }
            }
-            
-            else if ((int)request[0]-'0'    == 5){
-            std ::array<uint8_t, sizeof(MessagePayload) > payload = payload5();
+
+            else if ((int)request[0]-'0' == 5  && (int)request[1]-'0'<1){
+            std ::array<uint8_t, sizeof(MessagePayload) > payload = genericMessagePayload('3');
             auto* payloadData = reinterpret_cast<MessagePayload*>(payload.data());
             int textSize = payloadData->getPayloadSize();
             std ::array<uint8_t, sizeof(LittleReq) > header = header5(textSize);
             s.send(boost::asio::buffer(header));
             s.send(boost::asio::buffer(payload));
-            std ::array<uint8_t, sizeof(LittleReq) > header1;
-            s.receive(boost::asio::buffer(header1));
+            
+            std ::array<uint8_t, sizeof(ResponseHeader) > resHeader;
+            s.receive(boost::asio::buffer(resHeader));
+            auto* resHeaderData = reinterpret_cast<ResponseHeader*>(resHeader.data());
+
+            if (resHeaderData->getCode()== 9000)
+            {
+                std::cout << "Server responded with an error "<< "\n";
             }
-
+            else {         
+            std ::array<uint8_t, sizeof(ResponseMessageSent) > resPayload;
+            s.receive(boost::asio::buffer(resPayload));
+            auto* resPayloadData = reinterpret_cast<ResponseMessageSent*>(resPayload.data());
+            }
             
             
+            }
+            else if ((int)request[0]-'0' == 5 && (int)request[1]-'0' == 1){ 
+            //ask other one for his symetric
+            std ::array<uint8_t, sizeof(MessagePayload) > payload = genericMessagePayload('1');
+            auto* payloadData = reinterpret_cast<MessagePayload*>(payload.data());
+            int textSize = payloadData->getPayloadSize();
+            std ::array<uint8_t, sizeof(LittleReq) > header = header5(textSize);
 
+
+            }
+            else if ((int)request[0]-'0' == 5 && (int)request[1]-'0' == 2){ 
+            //create a symetric key and send it to the asker 
+            std ::array<uint8_t, sizeof(MessagePayload) > payload = genericMessagePayload('2');
+            auto* payloadData = reinterpret_cast<MessagePayload*>(payload.data());
+            int textSize = payloadData->getPayloadSize();
+            std ::array<uint8_t, sizeof(LittleReq) > header = header5(textSize);
+
+            }
         }
+
+         
     } catch (std::exception& e){
         std::cerr << "Exception: " << e.what() << "\n";
     }
