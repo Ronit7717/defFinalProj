@@ -81,17 +81,17 @@ class Requests:
 
         elif self.code==103:
             print('req - send message')
-            name=self.payload[0].decode()
-            name=name.rstrip('\x00')
+            toClient=self.payload[0].decode()
+            toClient=toClient.rstrip('\x00')
             messageType=self.payload[1]
             size=self.payload[2]
             content=self.payload[3].decode()
             content=content.rstrip('\x00')
-            sendMessage = u.sendMessage(name,messageType,size,content)
+            sendMessage = u.sendMessage(toClient,messageType,size,content)
             if sendMessage[0]!=9000:
-                packpayload=self.buildReturnPayload(sendMessage[1],'16s160s', 176)#replace format
+                packpayload=self.buildReturnPayload(sendMessage[1],'16si', 176)#replace format
                 packheader = self.buildReturnHeader(sendMessage[0],packpayload[0])
-                return (packheader,packpayload)
+                return (packheader,packpayload[1], 0)
             else:
                 packheader = self.buildReturnHeader(sendMessage[0],0)
                 return (packheader,)
